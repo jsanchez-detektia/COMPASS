@@ -251,10 +251,13 @@ def compute_geocoding_correction_luts(burst, dem_path, tec_path,
         from RAiDER.delay import tropo_delay
         from RAiDER.llreader import RasterRDR
         from RAiDER.losreader import Zenith
+        from RAiDER.models import ERA5
         # Instantiate an "aoi" object to read lat/lon/height files
         aoi = RasterRDR(rdr2geo_raster_paths[1], rdr2geo_raster_paths[0],
                         rdr2geo_raster_paths[2])
-
+        wm = ERA5()
+        aoi.add_buffer(wm.getLLRes())
+        aoi.set_output_xygrid('EPSG:4326')
         # Instantiate the Zenith object. Note RAiDER LOS object requires
         # the orbit files.
         los = Zenith()
